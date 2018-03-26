@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jom/Documents/prgs/projects/sdcar/main.cpp
+iostream
+-
+
+/home/jom/Documents/prgs/projects/sdcar/mpc/mpc.cpp
+iostream
+-
+mpc.h
+/home/jom/Documents/prgs/projects/sdcar/mpc/mpc.h
+
+/home/jom/Documents/prgs/projects/sdcar/mpc/mpc.h
+
