@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(sdcar)
+project(main)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -Wall -Wextra")
 
-add_executable(sdcar main.cpp ./mpc/mpc.cpp)
+add_executable(main main.cpp helpers.cpp)
+
+INCLUDE_DIRECTORIES(
+    ${CMAKE_SOURCE_DIR}
+    /home/jom/Documents/prgs/projects/eigen
+    )
