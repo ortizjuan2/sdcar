@@ -5,27 +5,11 @@
 #include <cppad/ipopt/solve.hpp>
 
 
-// set time stamp and duration
-size_t N = 5; // number of steps to consider
-double dt = 100e-3; // 100 milliseconds
-
-/** The solver takes all the state variables and actuators variables in a 
-    single vector. Thus, we should stablish where one variable starts and
-    another ends.
- */
-size_t x_start = 0;
-size_t y_start = x_start + N;
-size_t psi_start = y_start + N;
-size_t v_start = psi_start + N;
-size_t cte_start = v_start + N;
-size_t epsi_start = cte_start + N;
-size_t delta_start = epsi_start + N - 1;
-size_t a_start = delta_start + N - 1;
-
 
 int main() {
   std::cout << "Hello World!\n";
   Eigen::VectorXd coeffs(4);
+  coeffs << 0.644988, 1.26437, 0.429574, -0.00941219 ;
   typedef CPPAD_TESTVECTOR(double) Dvector;
   
   /** number of independent variables including actuators **/
@@ -100,6 +84,7 @@ int main() {
   // solver options
   std::string options;
   options += "Integer   print_level     0\n";
+  options += "String    sb              yes\n";
   options += "Sparse    true            forward\n";
   options += "Sparse    true            reverse\n";
   options += "Numeric   max_cpu_time    0.05\n";
@@ -113,5 +98,9 @@ int main() {
           fg_eval, solution);
   
   std::cout << "Result: " << (solution.status==CppAD::ipopt::solve_result<Dvector>::success) << std::endl;
+  std::cout << "Solution size: " << solution.x.size() << std::endl;
+  for (int i = 0; i < n_vars; i++){
+      std::cout << i << "\t\t" << solution.x[i] << std::endl;
+  }
   
 }

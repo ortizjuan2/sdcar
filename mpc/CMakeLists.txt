@@ -5,12 +5,13 @@ project(mpc)
 FIND_PACKAGE(PkgConfig)
 PKG_CHECK_MODULES(IPOPT REQUIRED ipopt)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -Wall -Wextra -Wunused-parameter")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -Wno-unused-variable")
 
 add_executable(mpc mpc.cpp)
 
 INCLUDE_DIRECTORIES(
     ${CMAKE_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/..
     /home/jom/Documents/prgs/projects/cppad
     /home/jom/Documents/prgs/projects/eigen
     /home/jom/Documents/prgs/projects/Ipopt-3.12.9/include
