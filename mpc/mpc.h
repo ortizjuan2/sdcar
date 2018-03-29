@@ -13,7 +13,7 @@
 
 
 // set time stamp and duration
-size_t N = 5; // number of steps to consider
+size_t N = 20; // number of steps to consider
 double dt = 100e-3; // 100 milliseconds
 
 const double Lf = 2.67;

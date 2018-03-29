@@ -23,12 +23,21 @@ model::~model(){};
 void model::move(double steer, double throttle, double dt){
     STATE newstate;
     STATE current_state = this->get_state();
-    newstate.x = current_state.v * cos(current_state.psi) * dt;
-    newstate.y = current_state.v * sin(current_state.psi) * dt;
-    newstate.psi = (current_state.v / Lf) * steer * dt;
+    newstate.x = current_state.x + (current_state.v * cos(current_state.psi) * dt);
+    newstate.y = current_state.y + (current_state.v * sin(current_state.psi) * dt);
+    newstate.psi = current_state.psi + ((current_state.v / Lf) * steer * dt);
     newstate.v = current_state.v + (throttle * dt);
-    newstate.steer = steer;
-    newstate.throttle = throttle;
+    newstate.steer = current_state.steer + steer;
+    if (newstate.steer > 0.43)
+        newstate.steer = 0.43;
+    else if(newstate.steer < -0.43)
+        newstate.steer = -0.43;
+
+    newstate.throttle = (current_state.throttle + throttle);
+    if (newstate.throttle > 1.0)
+        newstate.throttle = 1.0;
+    else if (newstate.throttle < -1.0)
+        newstate.throttle = -1.0;
     
     this->set_state(newstate);
 }

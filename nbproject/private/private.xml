@@ -13,9 +13,12 @@
             <file>file:/home/jom/Documents/prgs/projects/sdcar/model/model.cpp</file>
             <file>file:/home/jom/Documents/prgs/projects/sdcar/main.cpp</file>
             <file>file:/home/jom/Documents/prgs/projects/sdcar/model/model.h</file>
+            <file>file:/home/jom/Documents/prgs/projects/sdcar/mpc/mpc.h</file>
             <file>file:/home/jom/Documents/prgs/projects/sdcar/helpers.h</file>
+            <file>file:/home/jom/Documents/prgs/projects/sdcar/mpc/mpc.cpp</file>
             <file>file:/home/jom/Documents/prgs/projects/sdcar/helpers.cpp</file>
             <file>file:/home/jom/Documents/prgs/projects/sdcar/CMakeLists.txt</file>
+            <file>file:/home/jom/Documents/prgs/projects/sdcar/mpc/CMakeLists.txt</file>
         </group>
     </open-files>
 </project-private>
