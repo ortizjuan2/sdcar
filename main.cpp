@@ -4,8 +4,10 @@
 #include <vector>
 #include "helpers.h"
 #include "model/model.h"
+#include "mpc/mpc.h"
 
-const double Lf = 2.67;
+
+//const double Lf = 2.67;
 
 using namespace std;
 using namespace Eigen;
@@ -13,6 +15,8 @@ using namespace Eigen;
 int main(int argc, char * argv[]){
     
     model myModel;
+    MPC myMpc;
+    Eigen::VectorXd result(2);
     
     cout << "current x: " << myModel.state.x << " current y: " << myModel.state.y 
         << " current psi: " << myModel.state.psi << " current v: " << myModel.state.v << endl;

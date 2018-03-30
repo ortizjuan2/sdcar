@@ -7,7 +7,7 @@
 
 
 int main() {
-  std::cout << "Hello World!\n";
+  
   Eigen::VectorXd coeffs(4);
   coeffs << 1.01 , 0.2 , 1.0 , 1.84136e-16;
   
@@ -21,7 +21,7 @@ int main() {
   
   /* set the number of constraints */
   size_t n_constraints = N * 6;
-  
+
   // Initial value of the independent variables
   // should be zero except for the initial values.
   Dvector vars(n_vars);
@@ -116,7 +116,7 @@ int main() {
 
   std::cout << "solx = [";
   for(int i = 0; i < N; i++)
-    std::cout << solution.x[x_start + i] << ",";
+    std::cout << solution.x[i] << ",";
   std::cout << "]" << std::endl;
 //
   std::cout << "soly = [";

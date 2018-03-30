@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(mpc)
+project(mpctest)
 
 FIND_PACKAGE(PkgConfig)
 PKG_CHECK_MODULES(IPOPT REQUIRED ipopt)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -Wno-unused-variable")
 
-add_executable(mpc mpc.cpp)
+add_executable(mpctest mpctest.cpp)
 
 INCLUDE_DIRECTORIES(
     ${CMAKE_SOURCE_DIR}
@@ -22,6 +22,6 @@ LINK_DIRECTORIES( ${IPOPT_LIBRARY_DIRS} )
 #
 # libraries to be linked into the specified target,
 # as determined by pkg-config for ipopt
-TARGET_LINK_LIBRARIES(mpc
+TARGET_LINK_LIBRARIES(mpctest
     ${IPOPT_LDFLAGS}
 )
