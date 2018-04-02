@@ -1,3 +1,0 @@
-/home/jom/Documents/prgs/projects/sdcar/build/CMakeFiles/edit_cache.dir
-/home/jom/Documents/prgs/projects/sdcar/build/CMakeFiles/rebuild_cache.dir
-/home/jom/Documents/prgs/projects/sdcar/build/CMakeFiles/sdcar.dir
