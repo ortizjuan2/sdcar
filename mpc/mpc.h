@@ -18,7 +18,7 @@ size_t N = 40; // number of steps to consider
 
 double dt = 100e-3; // 100 milliseconds
 
-const double Lf = 2.67;
+// const double Lf = 2.67;
 
 /** The solver takes all the state variables and actuators variables in a 
     single vector. Thus, we should stablish where one variable starts and
@@ -64,17 +64,17 @@ public:
         }
         
 
-        // Minimize the use of actuators
-        for (int i = 0; i < N-1; i++){
-            fg[0] += 500 * CppAD::pow(vars[delta_start + i], 2); // steering
-            fg[0] += 10 * CppAD::pow(vars[a_start + i], 2); // throttling
-        }
+        // // Minimize the use of actuators
+        // for (int i = 0; i < N-1; i++){
+        //     fg[0] += 500 * CppAD::pow(vars[delta_start + i], 2); // steering
+        //     fg[0] += 10 * CppAD::pow(vars[a_start + i], 2); // throttling
+        // }
 
-        // Minimize the value gap between sequential actuations
-        for (int i = 0; i < N - 2; i++){
-            fg[0] += 1000 * CppAD::pow(vars[delta_start + i + 1] - vars[delta_start + i], 2);
-            fg[0] += 1000 * CppAD::pow(vars[a_start + i + 1] - vars[a_start + i], 2);
-        }
+        // // Minimize the value gap between sequential actuations
+        // for (int i = 0; i < N - 2; i++){
+        //     fg[0] += 1000 * CppAD::pow(vars[delta_start + i + 1] - vars[delta_start + i], 2);
+        //     fg[0] += 1000 * CppAD::pow(vars[a_start + i + 1] - vars[a_start + i], 2);
+        // }
         /*** Setup constraints
          *   We add 1 to each of the starting indices due to cost being 
          *   located at index 0 of fg         
@@ -149,7 +149,7 @@ Eigen::VectorXd MPC::solve(Eigen::VectorXd coeffs, Eigen::VectorXd state) {
   Eigen::VectorXd result(2);
   coeffs << 1.01 , 0.2 , 1.0 , 1.84136e-16;
   
-  std::cout << coeffs << std::endl;
+//   std::cout << coeffs << std::endl;
 
 
   typedef CPPAD_TESTVECTOR(double) Dvector;
@@ -226,8 +226,8 @@ Eigen::VectorXd MPC::solve(Eigen::VectorXd coeffs, Eigen::VectorXd state) {
   
   // solver options
   std::string options;
-  //options += "Integer   print_level     0\n";
-  //options += "String    sb              yes\n";
+  options += "Integer   print_level     0\n";
+  options += "String    sb              yes\n";
   options += "Sparse    true            forward\n";
   options += "Sparse    true            reverse\n";
   //options += "Numeric   max_cpu_time    1.0\n";
@@ -240,30 +240,30 @@ Eigen::VectorXd MPC::solve(Eigen::VectorXd coeffs, Eigen::VectorXd state) {
           vars_upperbounds, constraints_lowerbounds, constraints_upperbounds,
           fg_eval, solution);
   
-  std::cout << "Result: " << (solution.status==CppAD::ipopt::solve_result<Dvector>::success) << std::endl;
-  std::cout << "Solution size: " << solution.x.size() << std::endl;
-  std::cout << "#\tX\tY\tPSI\tV\tCTE\tEPSI" << std::endl;
-  for (int i = 0; i < n_constraints/6.; i++){
-      std::cout << i << "\t" << solution.x[i] 
-                    << "\t" << solution.x[i+1]
-                    << "\t" << solution.x[i+2]
-                    << "\t" << solution.x[i+3]
-                    << "\t" << solution.x[i+4]
-                    << "\t" << solution.x[i+5] << std::endl;
-  }
+//   std::cout << "Result: " << (solution.status==CppAD::ipopt::solve_result<Dvector>::success) << std::endl;
+//   std::cout << "Solution size: " << solution.x.size() << std::endl;
+//   std::cout << "#\tX\tY\tPSI\tV\tCTE\tEPSI" << std::endl;
+//   for (int i = 0; i < n_constraints/6.; i++){
+//       std::cout << i << "\t" << solution.x[i] 
+//                     << "\t" << solution.x[i+1]
+//                     << "\t" << solution.x[i+2]
+//                     << "\t" << solution.x[i+3]
+//                     << "\t" << solution.x[i+4]
+//                     << "\t" << solution.x[i+5] << std::endl;
+//   }
 
-  std::cout << "solx = [";
-  for(int i = 0; i < N; i++)
-    std::cout << solution.x[i] << ",";
-  std::cout << "]" << std::endl;
-//
-  std::cout << "soly = [";
-  for(int i = 0; i < N; i++)
-    std::cout << solution.x[y_start + i] << ",";
-  std::cout << "]" << std::endl;
+//   std::cout << "solx = [";
+//   for(int i = 0; i < N; i++)
+//     std::cout << solution.x[i] << ",";
+//   std::cout << "]" << std::endl;
+// //
+//   std::cout << "soly = [";
+//   for(int i = 0; i < N; i++)
+//     std::cout << solution.x[y_start + i] << ",";
+//   std::cout << "]" << std::endl;
 
-    std::cout << "Solution steer: " << solution.x[delta_start] << std::endl;
-    std::cout << "Solution throttle: " << solution.x[a_start] << std::endl;
+//     std::cout << "Solution steer: " << solution.x[delta_start] << std::endl;
+//     std::cout << "Solution throttle: " << solution.x[a_start] << std::endl;
 
     result << solution.x[delta_start], solution.x[a_start];
 

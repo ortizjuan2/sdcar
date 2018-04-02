@@ -15,6 +15,7 @@
 #define MODEL_H
 
 const double Lf = 2.67;
+const double vref = 15.0;
 
 typedef struct {
     double x, y, psi, v, steer, throttle;
@@ -34,13 +35,14 @@ typedef struct {
         ~model(){};
         void move(double steer, double throttle, double dt){
             STATE newstate;
+            throttle *= vref;
             STATE current_state = this->get_state();
             // set new v based on received throttle
             newstate.throttle = throttle;
-            if (newstate.throttle > 1.0)
-                newstate.throttle = 1.0;
-            else if (newstate.throttle < -1.0)
-                newstate.throttle = -1.0;
+            if (newstate.throttle > vref)
+                newstate.throttle = vref;
+            else if (newstate.throttle < -vref)
+                newstate.throttle = -vref;
             newstate.v = current_state.v + (throttle * dt);
             // set new steer based on received steer
             newstate.steer = steer;
