@@ -147,7 +147,7 @@ Eigen::VectorXd MPC::solve(Eigen::VectorXd coeffs, Eigen::VectorXd state) {
   
   //Eigen::VectorXd coeffs(4);
   Eigen::VectorXd result(2);
-  coeffs << 1.01 , 0.2 , 1.0 , 1.84136e-16;
+  // coeffs << 1.01 , 0.2 , 1.0 , 1.84136e-16;
   
 //   std::cout << coeffs << std::endl;
 
