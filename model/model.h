@@ -35,15 +35,14 @@ typedef struct {
         ~model(){};
         void move(double steer, double throttle, double dt){
             STATE newstate;
-            throttle *= vref;
             STATE current_state = this->get_state();
             // set new v based on received throttle
             newstate.throttle = throttle;
-            if (newstate.throttle > vref)
-                newstate.throttle = vref;
-            else if (newstate.throttle < -vref)
-                newstate.throttle = -vref;
             newstate.v = current_state.v + (throttle * dt);
+            if(newstate.v > vref)
+                newstate.v = vref;
+            else if(newstate.v < 0.0)
+                newstate.v = 0.0;
             // set new steer based on received steer
             newstate.steer = steer;
             if (newstate.steer > 0.43)
@@ -51,7 +50,7 @@ typedef struct {
             else if(newstate.steer < -0.43)
                 newstate.steer = -0.43;
             // execute actuators command
-            newstate.psi = current_state.psi + ((newstate.v / Lf) * steer * dt);
+            newstate.psi = current_state.psi + ((newstate.v / Lf) * newstate.steer * dt);
             newstate.x = current_state.x + (newstate.v * cos(newstate.psi) * dt);
             newstate.y = current_state.y + (newstate.v * sin(newstate.psi) * dt);
             

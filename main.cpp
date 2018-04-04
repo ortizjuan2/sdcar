@@ -49,7 +49,7 @@ int main(int argc, char * argv[]){
     //
     STATE currstate;
 
-    for (int j = 0; j < 20; j++){
+    for (int j = 0; j < 500; j++){
         // waypoints
         // xvals << 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10;
         // yvals << 1, 2, 5, 10, 17, 26, 37, 50, 65, 82, 101;
@@ -84,24 +84,24 @@ int main(int argc, char * argv[]){
         frameConversion(currstate.x, currstate.y, currstate.psi, xvals, yvals);
 
         // print waypoints in car frame
-        cout << "xvals = [";
-        for (int i = 0; i < xvals.size(); i++)
-            cout << xvals[i] << ",";
-            cout << "]" << endl;
-        cout << "yvals = [";
-        for (int i = 0; i < yvals.size(); i++)
-            cout << yvals[i] << ",";
-            cout << "]" << endl;
-        // fit polynomial in car frame
+//        cout << "xvals = [";
+//        for (int i = 0; i < xvals.size(); i++)
+//            cout << xvals[i] << ",";
+//            cout << "]" << endl;
+//        cout << "yvals = [";
+//        for (int i = 0; i < yvals.size(); i++)
+//            cout << yvals[i] << ",";
+//            cout << "]" << endl;
+//        // fit polynomial in car frame
         coeffs = polyfit(xvals, yvals, order);
         
         // print found coeffs
-        cout << "Polynomial Coefficients in car frame: ";
-        for (int i = 0; i < coeffs.size(); i++){
-            cout << coeffs[i] << ", ";
-        }
-        cout << endl;
-
+//        cout << "Polynomial Coefficients in car frame: ";
+//        for (int i = 0; i < coeffs.size(); i++){
+//            cout << coeffs[i] << ", ";
+//        }
+//        cout << endl;
+//
         xs.push_back(currstate.x);
         ys.push_back(currstate.y);
         
@@ -109,10 +109,10 @@ int main(int argc, char * argv[]){
          * Predict the state 100ms into the future
          * before sending it to the solver
         */
-        double px = currstate.v * cos(0) * 100e-3;
-        double py = currstate.v * sin(0) * 100e-3;
-        double psi = (currstate.v / Lf) * currstate.steer * 100e-3;
-        double v = currstate.v + (currstate.throttle * 100e-3);
+        double px = currstate.v * cos(0) * dt;
+        double py = currstate.v * sin(0) * dt;
+        double psi = (currstate.v / Lf) * currstate.steer * dt;
+        double v = currstate.v + (currstate.throttle * dt);
 
         // cout << "Future state x: " << px
         //     << " y: " << py
@@ -133,21 +133,21 @@ int main(int argc, char * argv[]){
         // cout << "Orientation error: " << epsi << endl; 
 
         state << px, py, psi, v, cte, epsi;
-
+        // solve miminization problem
         result = myMpc.solve(coeffs, state);
 
         // cout << result[0] << ", " << result[1] << endl;
 
-        myModel.move(-result[0], -result[1], dt);
+        myModel.move(-result[0], result[1], dt);
         //currstate = myModel.get_state();
 
         // cout << "current x: " << myModel.state.x << " current y: " << myModel.state.y 
         //     << " current psi: " << myModel.state.psi << " current v: " << myModel.state.v 
         //     << " current steer: " << myModel.state.steer << " current throttle: " << myModel.state.throttle << endl;
 
-        currstate = myModel.get_state();
-        xs.push_back(currstate.x);
-        ys.push_back(currstate.y);
+//        currstate = myModel.get_state();
+//        xs.push_back(currstate.x);
+//        ys.push_back(currstate.y);
     }
 
     cout << "xs = [";

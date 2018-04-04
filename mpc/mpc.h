@@ -14,9 +14,9 @@
 
 
 // set time stamp and duration
-size_t N = 40; // number of steps to consider
+size_t N = 20; // number of steps to consider
 
-double dt = 100e-3; // 100 milliseconds
+double dt = 50e-3; // 50 milliseconds
 
 // const double Lf = 2.67;
 
@@ -64,17 +64,17 @@ public:
         }
         
 
-        // // Minimize the use of actuators
-        // for (int i = 0; i < N-1; i++){
-        //     fg[0] += 500 * CppAD::pow(vars[delta_start + i], 2); // steering
-        //     fg[0] += 10 * CppAD::pow(vars[a_start + i], 2); // throttling
-        // }
+        // Minimize the use of actuators
+        for (int i = 0; i < N-1; i++){
+            fg[0] += 500 * CppAD::pow(vars[delta_start + i], 2); // steering
+            fg[0] += 10 * CppAD::pow(vars[a_start + i], 2); // throttling
+        }
 
-        // // Minimize the value gap between sequential actuations
-        // for (int i = 0; i < N - 2; i++){
-        //     fg[0] += 1000 * CppAD::pow(vars[delta_start + i + 1] - vars[delta_start + i], 2);
-        //     fg[0] += 1000 * CppAD::pow(vars[a_start + i + 1] - vars[a_start + i], 2);
-        // }
+        // Minimize the value gap between sequential actuations
+        for (int i = 0; i < N - 2; i++){
+            fg[0] += 1000 * CppAD::pow(vars[delta_start + i + 1] - vars[delta_start + i], 2);
+            fg[0] += 1000 * CppAD::pow(vars[a_start + i + 1] - vars[a_start + i], 2);
+        }
         /*** Setup constraints
          *   We add 1 to each of the starting indices due to cost being 
          *   located at index 0 of fg         
@@ -147,10 +147,6 @@ Eigen::VectorXd MPC::solve(Eigen::VectorXd coeffs, Eigen::VectorXd state) {
   
   //Eigen::VectorXd coeffs(4);
   Eigen::VectorXd result(2);
-  // coeffs << 1.01 , 0.2 , 1.0 , 1.84136e-16;
-  
-//   std::cout << coeffs << std::endl;
-
 
   typedef CPPAD_TESTVECTOR(double) Dvector;
   
