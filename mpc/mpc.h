@@ -14,9 +14,9 @@
 
 
 // set time stamp and duration
-size_t N = 20; // number of steps to consider
+size_t N = 10; // number of steps to consider
 
-double dt = 50e-3; // 50 milliseconds
+double dt = 100e-3; // 50 milliseconds
 
 // const double Lf = 2.67;
 
@@ -36,7 +36,7 @@ size_t a_start = delta_start + N - 1;
 /** Reference states*/
 double ref_cte = 0.;
 double ref_epsi = 0.;
-double ref_v = 15.0; //mts / H
+double ref_v = 30; //mts / H
 
 
 // using namespace CppAD::AD;
@@ -66,14 +66,14 @@ public:
 
         // Minimize the use of actuators
         for (int i = 0; i < N-1; i++){
-            fg[0] += 500 * CppAD::pow(vars[delta_start + i], 2); // steering
-            fg[0] += 10 * CppAD::pow(vars[a_start + i], 2); // throttling
+            fg[0] += 100 * CppAD::pow(vars[delta_start + i], 2); // steering
+            fg[0] += CppAD::pow(vars[a_start + i], 2); // throttling
         }
 
         // Minimize the value gap between sequential actuations
         for (int i = 0; i < N - 2; i++){
-            fg[0] += 1000 * CppAD::pow(vars[delta_start + i + 1] - vars[delta_start + i], 2);
-            fg[0] += 1000 * CppAD::pow(vars[a_start + i + 1] - vars[a_start + i], 2);
+            fg[0] += 100 * CppAD::pow(vars[delta_start + i + 1] - vars[delta_start + i], 2);
+            fg[0] += 10 * CppAD::pow(vars[a_start + i + 1] - vars[a_start + i], 2);
         }
         /*** Setup constraints
          *   We add 1 to each of the starting indices due to cost being 

@@ -14,6 +14,7 @@
 
 #include <Eigen/Core>
 #include <Eigen/QR>
+#include <vector>
     
 /*! \fn double polyeval(Eigen::VectorXd coeffs, double x)
  * 
@@ -56,6 +57,8 @@
 //#ifdef __cplusplus
 //}
 //#endif
+
+                
 
 #endif /* HELPERS_H */
 

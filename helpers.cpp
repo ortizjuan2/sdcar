@@ -5,7 +5,9 @@
 
 #include <iostream>
 #include <cmath>
+#include <vector>
 #include "helpers.h"
+
 
 
  double polyeval(Eigen::VectorXd coeffs, double x){
