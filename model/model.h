@@ -15,7 +15,8 @@
 #define MODEL_H
 
 const double Lf = 2.67;
-const double vref = 15.0;
+const double vref = 30.0;
+const double max_steer = 0.4363323129985824;
 
 typedef struct {
     double x, y, psi, v, steer, throttle;
@@ -38,21 +39,26 @@ typedef struct {
             STATE current_state = this->get_state();
             // set new v based on received throttle
             newstate.throttle = throttle;
-            newstate.v = current_state.v + (throttle * dt);
+            if(newstate.throttle > 1.0)
+                newstate.throttle = 1.0;
+            else if(newstate.throttle < -1.0)
+                newstate.throttle = -1.0;
+            //    
+            newstate.v = current_state.v + (current_state.throttle * dt);
             if(newstate.v > vref)
                 newstate.v = vref;
             else if(newstate.v < 0.0)
                 newstate.v = 0.0;
             // set new steer based on received steer
             newstate.steer = steer;
-            if (newstate.steer > 0.43)
-                newstate.steer = 0.43;
-            else if(newstate.steer < -0.43)
-                newstate.steer = -0.43;
+            if (newstate.steer > max_steer)
+                newstate.steer = max_steer;
+            else if(newstate.steer < -max_steer)
+                newstate.steer = -max_steer;
             // execute actuators command
-            newstate.psi = current_state.psi + ((newstate.v / Lf) * newstate.steer * dt);
-            newstate.x = current_state.x + (newstate.v * cos(newstate.psi) * dt);
-            newstate.y = current_state.y + (newstate.v * sin(newstate.psi) * dt);
+            newstate.psi = current_state.psi + ((current_state.v / Lf) * current_state.steer * dt);
+            newstate.x = current_state.x + (current_state.v * cos(current_state.psi) * dt);
+            newstate.y = current_state.y + (current_state.v * sin(current_state.psi) * dt);
             
             this->set_state(newstate);
         };

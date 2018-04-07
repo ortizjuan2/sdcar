@@ -30,7 +30,7 @@ size_t psi_start = y_start + N;
 size_t v_start = psi_start + N;
 size_t cte_start = v_start + N;
 size_t epsi_start = cte_start + N;
-size_t delta_start = epsi_start + N - 1;
+size_t delta_start = epsi_start + N;
 size_t a_start = delta_start + N - 1;
 
 /** Reference states*/
@@ -66,13 +66,13 @@ public:
 
         // Minimize the use of actuators
         for (int i = 0; i < N-1; i++){
-            fg[0] += 100 * CppAD::pow(vars[delta_start + i], 2); // steering
+            fg[0] += 1000 * CppAD::pow(vars[delta_start + i], 2); // steering
             fg[0] += CppAD::pow(vars[a_start + i], 2); // throttling
         }
 
         // Minimize the value gap between sequential actuations
         for (int i = 0; i < N - 2; i++){
-            fg[0] += 100 * CppAD::pow(vars[delta_start + i + 1] - vars[delta_start + i], 2);
+            fg[0] += 1000 * CppAD::pow(vars[delta_start + i + 1] - vars[delta_start + i], 2);
             fg[0] += 10 * CppAD::pow(vars[a_start + i + 1] - vars[a_start + i], 2);
         }
         /*** Setup constraints
