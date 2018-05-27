@@ -31,3 +31,7 @@
 *.out
 *.app
 **/build
+
+# cache
+__pycache__
+temp-plot.html
